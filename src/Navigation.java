@@ -2,8 +2,14 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import java.awt.geom.*;
 import java.util.*;
 
+/**
+ * This class contains the method to travel to a point (travelTo) and 
+ * the method to turn to the smallest angle possible (turnTo)
+ * @author Karine Mellata and Mustafa Khawaja
+ *
+ */
 
-public class Navigation extends Thread{
+public class Navigation{
 	private List<Point2D.Double> positions;
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor;
@@ -11,40 +17,29 @@ public class Navigation extends Thread{
 	private static final int FORWARD_SPEED = 50;
 	private static final int ROTATE_SPEED = 50;
 	private static double WHEEL_RADIUS = 2.1;
-	private static double TRACK = 12;//keep about 12.0
+	private static double TRACK = 12.5;
 	private static int i = 0 ;
 	
-	public Navigation(Odometer odometer, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, double wheelRadius, double track, List<Point2D.Double> positions) {
+	/**
+	 * Constructor
+	 * 
+	 * @param odometer
+	 * @param leftMotor
+	 * @param rightMotor
+	 * @param wheelRadius
+	 * @param track
+	 */
+	
+	public Navigation(Odometer odometer, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, double wheelRadius, double track) {
 		this.odometer = odometer;
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
-		this.positions = positions;
 	}
 	
 	/**
-	 * Thread
-	 * Called only on "Navigation" mode
-	 * It travels through 5 waypoints given in NavigationLab.java
+	 * This method makes to robot turn to a certain point and then travel to it
+	 * @param point2d
 	 */
-	
-	public void run() {
-		int n = positions.size();
-		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
-			motor.stop();
-			motor.setAcceleration(3000);
-		}
-		// wait 5 seconds
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// there is nothing to be done here because it is not expected that
-					// the odometer will be interrupted by another thread
-				}
-	    
-	    for (; i < n; i++) { 
-	    	travelTo(positions.get(i));
-	    }
-	  }
 	
 	public void travelTo(Point2D.Double point2d){ 
 		//initialization - where am I ?
@@ -66,6 +61,7 @@ public class Navigation extends Thread{
 	
 	/**
 	 * This method processes the radian angle and proceeds with the turn
+	 * @param alpha
 	 */
 	public void turnTo(double alpha){ 	
 		double currentAngle = odometer.getTheta();
@@ -106,6 +102,7 @@ public class Navigation extends Thread{
 	
 	/**
 	 * This method makes the robot go straight for a distance
+	 * @param distance
 	 */
 	
 	public void goStraight(double distance) {

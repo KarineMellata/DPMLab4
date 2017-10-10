@@ -1,7 +1,9 @@
 import lejos.hardware.lcd.TextLCD;
 
-/*
- * OdometryDisplay.java
+/**
+ * The display of the values
+ * @author Karine Mellata and Mustafa Khawaja
+ *
  */
 
 public class OdometryDisplay extends Thread {

@@ -1,7 +1,12 @@
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
+
+/**
+ * This class is our odometer which allows the robot to position itself with respect to its surroundings
+ * @author Karine Mellata and Mustafa Khawaja
+ *
+ */
 public class Odometer extends Thread {
-  // robot position
   private double x;
   private double y;
   private double theta;
@@ -16,7 +21,11 @@ public class Odometer extends Thread {
 
   private Object lock; /*lock object for mutual exclusion*/
 
-  // default constructor
+  /**
+   * Constructor
+   * @param leftMotor
+   * @param rightMotor
+   */
   public Odometer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) {
     this.leftMotor = leftMotor;
     this.rightMotor = rightMotor;
@@ -28,7 +37,9 @@ public class Odometer extends Thread {
     lock = new Object();
   }
 
-  // run method (required for Thread)
+  /**
+   * run method required for Thread
+   */
   public void run() {
     long updateStart, updateEnd;
 
@@ -53,11 +64,6 @@ public class Odometer extends Thread {
       dX = deltaD * Math.sin(theta);    // compute X component of displacement 
       dY = deltaD * Math.cos(theta);  // compute Y component of displacement
       synchronized (lock) {
-        /**
-         * Don't use the variables x, y, or theta anywhere but here! Only update the values of x, y,
-         * and theta in this block. Do not perform complex math
-         * 
-         */
       theta += (deltaT);            // update heading
         if(theta >= 2*Math.PI) {
         		theta = theta-(2*Math.PI);
